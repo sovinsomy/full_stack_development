@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon API</title>
+</head>
+<body>
+
+    <input type="text" id="pokemonName" placeholder="Pokemon Name">
+    <button onclick="getPokemonDetails()">Get Pokemon Details</button>
+    <div id="pokemonDetails"></div>
+
+    <script>
+        function getPokemonDetails() {
+            const pokemonName = document.getElementById("pokemonName").value.toLowerCase();
+            const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+         
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error("Pokemon not found!");
+                    return response.json();
+                })
+                .then(data => {
+                    const pokemonDetails = document.getElementById("pokemonDetails");
+                    const types = data.types.map(t => t.type.name).join(", ");
+                    const abilities = data.abilities
+                        .filter(a => !a.is_hidden)
+                        .map(a => a.ability.name)
+                        .join(", ");
+                    const hiddenAbilities = data.abilities
+                        .filter(a => a.is_hidden)
+                        .map(a => a.ability.name)
+                        .join(", ");
+
+                    pokemonDetails.innerHTML = `
+                        <h2>${data.name}</h2>
+                        <img src="${data.sprites.front_default}" alt="${data.name}">
+                        <p><strong>Type:</strong> ${types}</p>
+                        <p><strong>Height:</strong> ${data.height / 10} m</p>
+                        <p><strong>Weight:</strong> ${data.weight / 10} kg</p>
+                        <p><strong>Base Experience:</strong> ${data.base_experience}</p>
+                        <p><strong>Order:</strong> ${data.order}</p>
+                        <p><strong>Abilities:</strong> ${abilities}</p>
+                        <p><strong>Hidden Abilities:</strong> ${hiddenAbilities || "None"}</p>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById("pokemonDetails").innerHTML =
+                        `<p style="color:red;">Error: ${error.message}</p>`;
+                });
+        }
+    </script>
+
+</body>
+</html>
