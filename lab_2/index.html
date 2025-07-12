@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malware Signature and Behavior Tracking System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+  <!-- Navbar with dark background -->
+  <nav class="bg-orange-600 shadow-md p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="text-xl font-bold text-white">Malware Tracking</div>
+      <div class="hidden md:flex space-x-6">
+        <a href="#" class="flex items-center gap-1 text-gray-300 hover:text-red-600 transition-colors duration-300">
+          <i class="fa fa-home"></i> Home
+        </a>
+        <a href="#" class="flex items-center gap-1 text-gray-300 hover:text-red-600 transition-colors duration-300">
+          <i class="fa fa-bug"></i> Signatures
+        </a>
+        <a href="#" class="flex items-center gap-1 text-gray-300 hover:text-red-600 transition-colors duration-300">
+          <i class="fa fa-list-alt"></i> Behavior Logs
+        </a>
+        <a href="#" class="flex items-center gap-1 text-gray-300 hover:text-red-600 transition-colors duration-300">
+          <i class="fa fa-envelope"></i> Contact
+        </a>
+      </div>
+      <button class="md:hidden block text-gray-300" id="menu-btn">
+        <i class="fa fa-bars text-2xl"></i>
+      </button>
+    </div>
+    <div class="hidden md:hidden flex-col px-4 pt-4 space-y-2" id="mobile-menu">
+      <a href="#" class="text-gray-300 hover:text-red-600 transition-colors duration-300">Home</a>
+      <a href="#" class="text-gray-300 hover:text-red-600 transition-colors duration-300">Signatures</a>
+      <a href="#" class="text-gray-300 hover:text-red-600 transition-colors duration-300">Behavior Logs</a>
+      <a href="#" class="text-gray-300 hover:text-red-600 transition-colors duration-300">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section with local background image -->
+  <section 
+    class="h-screen bg-cover bg-center flex items-center justify-center text-white text-center"
+    style="background-image: url('malware.jpeg');"
+  >
+    <div class="bg-black bg-opacity-60 p-8 rounded shadow-lg max-w-2xl transition-transform duration-300 hover:scale-105">
+      <h1 class="text-5xl font-bold mb-4">Track and Analyze Malware Efficiently</h1>
+      <p class="text-lg mb-6">Monitor malware behavior, signatures, and threats in real-time.</p>
+      <a href="#" class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded shadow text-white font-semibold transition-transform duration-300 hover:scale-110">
+        Start Tracking
+      </a>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  <section class="p-8 bg-gray-900">
+    <h2 class="text-2xl font-bold mb-4 text-gray-200">Real‑Time Malware Analysis Demo</h2>
+    <div class="w-full h-[500px] rounded overflow-hidden shadow-lg">
+      <iframe class="w-full h-full rounded transition-shadow duration-300 hover:shadow-xl" 
+              src="https://www.youtube.com/embed/g_sI5Jxs6_0" 
+              title="Malware Analysis Live | Real‑Time Threat Analysis" 
+              frameborder="0" allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- Audio Section -->
+  <section class="p-8 bg-gray-900">
+    <h2 class="text-2xl font-bold mb-4 text-gray-200">Threat Alert Notification Sound</h2>
+    <audio controls class="w-full rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl bg-gray-800">
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+      Your browser does not support the audio tag.
+    </audio>
+  </section>
+
+  <!-- API Section -->
+  <section class="p-8 bg-gray-900">
+    <h2 class="text-2xl font-bold mb-6 text-gray-200">Latest Threat Feeds</h2>
+    <div id="api-content" class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"></div>
+  </section>
+
+  <!-- Footer with SVG -->
+<footer class="bg-orange-600 text-white p-6 text-center">
+  <div class="flex justify-center mb-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C8.134 2 5 5.134 5 9c0 3.866 4 8 7 11 3-3 7-7.134 7-11 0-3.866-3.134-7-7-7z" />
+    </svg>
+  </div>
+  <p class="mb-1">&copy; 2025 Malware Signature and Behavior Tracking System. All rights reserved.</p>
+  <p>Created by <strong>Sovin</strong> | Date: <strong>27-06-2025</strong></p>
+</footer>
+
+
+  <!-- JS for Menu and Fetch API -->
+  <script>
+    // Toggle mobile menu
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Fetch dummy threat data and add hover effect classes to white cards
+    fetch('https://jsonplaceholder.typicode.com/posts?_limit=6')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('api-content');
+        data.forEach(post => {
+          const card = document.createElement('div');
+          card.className = 'bg-white p-6 shadow-md rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl cursor-pointer';
+          card.innerHTML = `
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">${post.title}</h3>
+            <p class="text-gray-600">${post.body}</p>
+          `;
+          container.appendChild(card);
+        });
+      });
+  </script>
+
+</body>
+</html>
