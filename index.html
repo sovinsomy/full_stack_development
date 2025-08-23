@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Cyber Security – Malware Tracker | Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center text-gray-100">
+  <div class="max-w-3xl w-full bg-gray-900/80 border border-gray-700 rounded-2xl shadow-2xl backdrop-blur-md p-8">
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-cyan-400 tracking-wide">🔐 Malware Tracker</h1>
+      <p class="text-gray-400">Cyber Security | Malware Analysis & Log Tracking</p>
+    </div>
+
+    <form id="registerForm" class="space-y-5">
+      <div>
+        <label class="block text-sm font-semibold">Full Name</label>
+        <input required name="name" id="name" class="mt-1 block w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold">Email</label>
+        <input required name="email" id="email" type="email" class="mt-1 block w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold">Phone Number</label>
+        <input name="phone" id="phone" class="mt-1 block w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold">Profile Picture</label>
+        <input required type="file" name="profile_pic" id="profile_pic" accept="image/*" class="mt-1 block w-full text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-white hover:file:bg-cyan-400 cursor-pointer" />
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button type="submit" class="bg-cyan-600 hover:bg-cyan-500 transition px-5 py-2 rounded-lg text-white font-semibold shadow-lg">Register</button>
+        <a href="/users.html" class="text-cyan-400 hover:underline">View Registered Users</a>
+      </div>
+
+      <p id="status" class="text-sm mt-2"></p>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      status.className = "text-sm mt-2";
+
+      const frm = new FormData(form);
+
+      try {
+        const res = await fetch('/api/users', { method: 'POST', body: frm });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || JSON.stringify(err));
+        }
+        await res.json();
+        status.textContent = '✅ Registration successful! Confirmation email sent.';
+        status.classList.add("text-green-400");
+        form.reset();
+      } catch (err) {
+        status.textContent = '❌ ' + err.message;
+        status.classList.add("text-red-400");
+      }
+    });
+  </script>
+</body>
+</html>
